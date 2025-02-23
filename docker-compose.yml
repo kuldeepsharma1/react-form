@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile # Specify the Dockerfile
+    ports:
+      - "5173:5173" # Or the port your React app uses
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=development # Or production
