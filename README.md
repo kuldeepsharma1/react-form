@@ -16,6 +16,7 @@ A collection of reusable React form components built with React Hook Form and Zo
 -   React Hook Form
 -   Zod
 -   Tailwind CSS
+-   lucide-react
 
 ## Getting Started
 
