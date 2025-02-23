@@ -13,6 +13,7 @@ A collection of reusable React form components built with React Hook Form and Zo
 ## Technologies Used
 
 -   React
+-   React Router
 -   React Hook Form
 -   Zod
 -   Tailwind CSS
