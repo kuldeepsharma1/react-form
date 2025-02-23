@@ -22,7 +22,7 @@ A collection of reusable React form components built with React Hook Form and Zo
 1.  Clone the repository:
 
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/kuldeepsharma1/react-form.git
     ```
 
 2.  Install dependencies:
