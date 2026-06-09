@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Sun, Moon, Menu, Plus, MoreVertical } from 'lucide-react';
+import { Sun, Moon, Menu, Github, Layers } from 'lucide-react';
+import { useLocation } from 'react-router';
 
 interface NavbarProps {
   darkMode: boolean;
@@ -8,96 +8,87 @@ interface NavbarProps {
   setSidebarOpen: (value: boolean) => void;
 }
 
+const pageTitles: Record<string, { title: string; description: string }> = {
+  '/':         { title: 'Login Form',    description: 'Authentication with server-side error mapping' },
+  '/register': { title: 'Register Form', description: 'Registration with password strength meter' },
+  '/user':     { title: 'User Profile',  description: 'Enterprise CRUD form with sections & notifications' },
+};
+
 const Navbar = ({ darkMode, setDarkMode, sidebarOpen, setSidebarOpen }: NavbarProps) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { pathname } = useLocation();
+  const page = pageTitles[pathname] ?? pageTitles['/'];
 
   return (
-    <header className="bg-zinc-50 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 fixed w-full z-30 shadow-sm">
-      <div className="h-16 px-4 flex items-center justify-between max-w-screen-2xl mx-auto">
-        {/* Left section */}
-        <div className="flex items-center gap-4">
+    <header className="bg-white/80 dark:bg-surface-900/80 backdrop-blur-md border-b border-surface-200/80 dark:border-surface-700/60 fixed w-full z-30 shadow-sm">
+      <div className="h-16 px-4 flex items-center justify-between max-w-screen-2xl mx-auto gap-4">
+
+        {/* Left */}
+        <div className="flex items-center gap-3 min-w-0">
+          {/* Sidebar toggle (mobile) */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-primary-500 lg:hidden"
-            aria-label="Toggle Sidebar"
+            className="p-2 rounded-lg text-surface-500 hover:text-surface-900 hover:bg-surface-100 dark:text-surface-400 dark:hover:text-surface-100 dark:hover:bg-surface-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 transition-colors lg:hidden"
+            aria-label="Toggle sidebar"
+            aria-expanded={sidebarOpen}
           >
-            <Menu className="size-5" />
+            <Menu size={20} />
           </button>
-          <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary-900 to-primary-400 bg-clip-text text-transparent dark:from-primary-100 ">
-              React Forms
+
+          {/* Brand */}
+          <div className="flex items-center gap-2.5 flex-shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-600 to-primary-400 flex items-center justify-center shadow-sm">
+              <Layers size={16} className="text-white" aria-hidden="true" />
+            </div>
+            <span className="text-base font-bold text-surface-900 dark:text-surface-50 tracking-tight">
+              FormKit
             </span>
-            <span className="hidden sm:inline-block text-xs px-2 py-1 rounded-full bg-primary-100 dark:bg-zinc-700 text-primary-700 dark:text-primary-300 font-medium">
-              Beta
+            <span className="hidden sm:inline-flex badge badge-primary text-[10px]">
+              v1.0
             </span>
+          </div>
+
+          {/* Breadcrumb divider + page title (md+) */}
+          <div className="hidden md:flex items-center gap-2.5 min-w-0">
+            <span className="text-surface-300 dark:text-surface-600" aria-hidden="true">/</span>
+            <div className="min-w-0">
+              <span className="text-sm font-medium text-surface-700 dark:text-surface-300 truncate block">
+                {page.title}
+              </span>
+            </div>
           </div>
         </div>
 
-
-
-        {/* Right section */}
-        <div className="flex items-center gap-2">
-          {/* Mobile dropdown */}
-          <div className="relative md:hidden">
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="p-2 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
-              aria-label="More options"
-            >
-              <MoreVertical className="size-5" />
-            </button>
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-zinc-50 dark:bg-zinc-800 shadow-lg rounded-md">
-                <ul className="py-1">
-                  <li>
-                    <a href="#" className="block px-4 py-2 text-sm text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700">
-                      Templates
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block px-4 py-2 text-sm text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700">
-                      Components
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="block px-4 py-2 text-sm text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700">
-                      Documentation
-                    </a>
-                  </li>
-                  <li>
-                    <button
-                      className="cursor-pointer block w-full text-left px-4 py-3 text-sm font-semibold text-white dark:text-gray-100 bg-primary-500 hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 rounded-md shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-secondary-800 "
-                    >
-                      <Plus className="inline-block mr-2 size-4 text-white dark:text-gray-100 opacity-75" /> {/* Added opacity to icon */}
-                      New Form
-                    </button>
-
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
-
+        {/* Right */}
+        <div className="flex items-center gap-1.5">
+          {/* Dark mode toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="p-2 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
-            aria-label="Toggle Theme"
+            className="p-2 rounded-lg text-surface-500 hover:text-surface-900 hover:bg-surface-100 dark:text-surface-400 dark:hover:text-surface-100 dark:hover:bg-surface-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 transition-colors"
+            aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            {darkMode ? <Sun className="size-5" /> : <Moon className="size-5" />}
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
           </button>
+
+          {/* GitHub */}
           <a
-            href="https://github.com/kuldeepsharma1/react-form.git"
+            href="https://github.com/kuldeepsharma1/react-form"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-700"
-            title="GitHub"
+            className="p-2 rounded-lg text-surface-500 hover:text-surface-900 hover:bg-surface-100 dark:text-surface-400 dark:hover:text-surface-100 dark:hover:bg-surface-800 transition-colors"
+            aria-label="View on GitHub"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-5"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>
+            <Github size={18} />
           </a>
-          <button className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary-600 to-primary-400 hover:from-primary-700 hover:to-primary-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-200">
-            <Plus className="size-4" />
-            New Form
-          </button>
+
+          {/* Docs button (desktop) */}
+          <a
+            href="https://github.com/kuldeepsharma1/react-form"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:flex btn btn-secondary btn-sm gap-1.5"
+          >
+            Documentation
+          </a>
         </div>
       </div>
     </header>
